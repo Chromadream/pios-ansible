@@ -23,24 +23,27 @@ By default, stage 2 also exports a stock Lite image. The file `SKIP_IMAGES` stop
 The host machine needs:
 
 - Docker
-- qemu-user-binfmt
 - git
 - 15 GB of free disk space
-- a 64-bit kernel with binfmt_misc support (Linux hosts)
 
-macOS does not need the QEMU packages. See the macOS section below.
+arm64 hosts build natively and need no QEMU. Apple silicon Macs are arm64 hosts.
 
-The build emulates arm64 on Linux hosts. The `qemu-user-binfmt` package registers the QEMU interpreter with the kernel at boot time. The pi-gen build container registers the static interpreter again before the build starts. No manual setup is needed.
+Linux x86_64 hosts build with emulation. They need:
+
+- qemu-user-static and qemu-user (Ubuntu) or qemu-user-static-binfmt and qemu-user (Arch)
+- a 64-bit kernel with binfmt_misc support
+
+The static QEMU package registers the QEMU interpreter with the kernel at boot time. The dynamic `qemu-user` package is needed by pi-gen's own check. No manual setup is needed.
+
+Emulated builds on x86_64 hosts are fragile. Prefer an arm64 host when possible.
 
 ### Ubuntu
 
 1. Install the packages:
 
    ```
-   sudo apt install -y docker.io docker-compose-v2 qemu-user-binfmt git
+   sudo apt install -y docker.io docker-compose-v2 qemu-user-static qemu-user git
    ```
-
-   The `qemu-user-binfmt` package conflicts with `qemu-user-static`. Install one of them, not both.
 
 2. Add your user to the docker group:
 
@@ -66,7 +69,7 @@ The build emulates arm64 on Linux hosts. The `qemu-user-binfmt` package register
 1. Install the packages:
 
    ```
-   sudo pacman -S docker git qemu-user-binfmt
+   sudo pacman -S docker git qemu-user-static-binfmt qemu-user
    ```
 
 2. Add your user to the docker group:
@@ -214,4 +217,6 @@ The `config` file sets these values:
 
 ## CI builds
 
-The GitHub Actions workflow builds the image each week. You can also start a build by hand on the Actions tab of the repository. The workflow uploads the image as an artifact. Artifacts expire after 14 days.
+The GitHub Actions workflow builds the image each week on a native arm64 runner (`ubuntu-24.04-arm`). The build needs no emulation there. You can also start a build by hand on the Actions tab of the repository. The workflow uploads the image as an artifact. Artifacts expire after 14 days.
+
+Arm64 runners are free for public repositories. For private repositories they consume more credits than x64 runners.
