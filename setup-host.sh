@@ -3,6 +3,11 @@ set -euo pipefail
 
 QEMU_STATIC=/usr/bin/qemu-aarch64-static
 
+if [ ! -d /proc/sys/fs/binfmt_misc ]; then
+    echo "This script is for Linux hosts only. It is not required on this system."
+    exit 0
+fi
+
 if [ ! -f "${QEMU_STATIC}" ]; then
     echo "ERROR: ${QEMU_STATIC} not found. Install qemu-user-static first." 1>&2
     exit 1

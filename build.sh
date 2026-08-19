@@ -12,7 +12,9 @@ touch "${PI_GEN_DIR}/stage2/SKIP_IMAGES"
 PIGEN_OPTS="-v ${STAGE_DIR}:/stage-ansible"
 QEMU_SRC=/usr/bin/qemu-aarch64-static
 QEMU_DIR="${REPO_ROOT}/.qemu"
-if [ -f "${QEMU_SRC}" ]; then
+if [ "$(uname -s)" = "Darwin" ]; then
+    :
+elif [ -f "${QEMU_SRC}" ]; then
     mkdir -p "${QEMU_DIR}"
     cp -p "${QEMU_SRC}" "${QEMU_DIR}/qemu-aarch64-static"
     PIGEN_OPTS="${PIGEN_OPTS} -v ${QEMU_DIR}/qemu-aarch64-static:/usr/bin/qemu-aarch64:ro"

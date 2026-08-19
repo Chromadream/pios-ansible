@@ -23,12 +23,14 @@ By default, stage 2 also exports a stock Lite image. The file `SKIP_IMAGES` stop
 The host machine needs:
 
 - Docker
-- qemu-user-static (Ubuntu 24.04 or newer; older Ubuntu also needs qemu-user-binfmt) or qemu-user-static and qemu-user-static-binfmt (Arch)
+- qemu-user-binfmt and qemu-user-static (Ubuntu) or qemu-user-static and qemu-user-static-binfmt (Arch)
 - git
 - 15 GB of free disk space
-- a 64-bit kernel with binfmt_misc support
+- a 64-bit kernel with binfmt_misc support (Linux hosts)
 
-The build emulates arm64. It needs a static QEMU interpreter for that. `setup-host.sh` registers one. This registration is not persistent. Run `sudo ./setup-host.sh` again after each reboot.
+macOS does not need the QEMU packages. See the macOS section below.
+
+The build emulates arm64 on Linux hosts. It needs a static QEMU interpreter there. `setup-host.sh` registers one. This registration is not persistent. Run `sudo ./setup-host.sh` again after each reboot.
 
 ### Ubuntu
 
@@ -103,6 +105,32 @@ If `/proc/sys/fs/binfmt_misc` is empty, load the kernel module:
 ```
 sudo modprobe binfmt_misc
 ```
+
+### macOS (Apple silicon)
+
+You can build this image on a Mac with an M-series chip. Docker Desktop runs arm64 Linux natively on these Macs. The build needs no QEMU on macOS.
+
+1. Install Docker Desktop. Then start it.
+2. Increase the resources of the VM. Open Settings, then Resources. Set at least 4 CPUs, 4 GB of memory, and 40 GB of disk.
+3. Keep the repository in a path without spaces. pi-gen cannot build from a path with spaces.
+4. Do not run `setup-host.sh`. This script is for Linux hosts only.
+5. Make sure that Docker works:
+
+   ```
+   docker run --rm hello-world
+   ```
+
+6. Build the image:
+
+   ```
+   ./build.sh
+   ```
+
+The first build takes 1 to 2.5 hours on a Mac. The build is slower on a Mac than on Linux.
+
+If the build fails at the image export step with a loop device error, update Docker Desktop. Loop device support needs a recent version of Docker Desktop.
+
+CI builds run on Linux only. The macOS steps are not tested in CI.
 
 ## Build
 
