@@ -1,0 +1,10 @@
+IMG_NAME='raspios-lite-ansible'
+RELEASE=trixie
+DEPLOY_COMPRESSION=xz
+LOCALE_DEFAULT=en_US.UTF-8
+TIMEZONE_DEFAULT=Australia/Melbourne
+TARGET_HOSTNAME=raspberrypi
+KEYBOARD_KEYMAP=us
+KEYBOARD_LAYOUT="English (US)"
+ENABLE_SSH=0
+STAGE_LIST="stage0 stage1 stage2 /stage-ansible"
