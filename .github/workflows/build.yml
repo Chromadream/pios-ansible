@@ -1,6 +1,8 @@
 name: build-image
 
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
   schedule:
     - cron: '0 2 * * 1'
@@ -17,7 +19,7 @@ jobs:
 
       - name: Build image
         run: |
-          PIGEN_DOCKER_OPTS="-e WORK_DIR=/mnt/work -v /mnt/work:/pi-gen/work" ./build.sh
+          PIGEN_DOCKER_OPTS="-e WORK_DIR=/pi-gen/work/raspios-lite-ansible -v /mnt/work:/pi-gen/work/raspios-lite-ansible" ./build.sh
 
       - name: Upload image
         uses: actions/upload-artifact@v7
