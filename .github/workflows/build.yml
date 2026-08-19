@@ -11,14 +11,14 @@ jobs:
     timeout-minutes: 360
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y qemu-user-binfmt qemu-user-static
+          sudo apt-get install -y qemu-user-static
           sudo ./setup-host.sh
 
       - name: Build image
@@ -26,7 +26,7 @@ jobs:
           PIGEN_DOCKER_OPTS="-e WORK_DIR=/mnt/work" ./build.sh
 
       - name: Upload image
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: raspios-lite-ansible
           path: pi-gen/deploy/*.img.xz

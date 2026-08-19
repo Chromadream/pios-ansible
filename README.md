@@ -23,7 +23,7 @@ By default, stage 2 also exports a stock Lite image. The file `SKIP_IMAGES` stop
 The host machine needs:
 
 - Docker
-- qemu-user-binfmt and qemu-user-static (Ubuntu) or qemu-user-static and qemu-user-static-binfmt (Arch)
+- qemu-user-static (Ubuntu 24.04 or newer; older Ubuntu also needs qemu-user-binfmt) or qemu-user-static and qemu-user-static-binfmt (Arch)
 - git
 - 15 GB of free disk space
 - a 64-bit kernel with binfmt_misc support
@@ -35,7 +35,7 @@ The build emulates arm64. It needs a static QEMU interpreter for that. `setup-ho
 1. Install the packages:
 
    ```
-   sudo apt install -y docker.io docker-compose-v2 qemu-user-binfmt qemu-user-static git
+   sudo apt install -y docker.io docker-compose-v2 qemu-user-static git
    ```
 
 2. Add your user to the docker group:
