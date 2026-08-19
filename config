@@ -7,4 +7,4 @@ TARGET_HOSTNAME=raspberrypi
 KEYBOARD_KEYMAP=us
 KEYBOARD_LAYOUT="English (US)"
 ENABLE_SSH=0
-STAGE_LIST="stage0 stage1 stage2 /stage-ansible"
+STAGE_LIST="stage0 stage1 stage2 /stage-custom"
